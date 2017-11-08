@@ -1,0 +1,121 @@
+<html>
+    <% include header %>
+    <style>
+        label {
+            display:block;
+        }
+
+        input {
+            width:100%;
+        }
+        .cot {
+            margin-bottom:25px;
+        }
+    </style>
+    <div class="container">
+        <h1>Buy Btc</h1>
+        <div class="row cot">
+        <div class="col-xs-12 col-sm-4">
+            <h4>Cotizacion Btc:</h4>
+            <span class="last-price-value"><%= lastPrice %></span>
+            <input type="hidden" class="last-price-value-api" value="<%= lastPrice %>" />
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            <h4>Cotizacion Ars:</h4>
+            <span class="last-blueprice-value"><%= bluePrice %></span>
+        </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-4">
+                <label>Monto Bitcoin:</label>
+                <input type="number" id="btc" value="0" />
+            </div>
+
+            <div class="col-xs-12 col-sm-4">
+                <label>Porcentaje:</label>
+                <input type="number" id="porcen" value="0" />
+            </div>
+
+            <div class="col-xs-12 col-sm-4">
+                <label>Pesos Ars:</label>
+                <input type="number" id="arsresult" value="0" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="button" id="calcular" class="btn" style="margin-top:25px;">Confirmar Transaccion</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        var lastPrice = document.querySelector('.last-price-value').innerHTML;
+        var bluePrice = document.querySelector('.last-blueprice-value').innerHTML;
+
+
+        function refreshData() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/Buy_Btc');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var allHTML = xhr.responseText;
+                    var el = document.createElement('html');
+                    el.innerHTML = allHTML;
+                    var lastPrice = el.getElementsByClassName('last-price-value-api')[0].value;
+                    document.querySelector('.last-price-value').innerHTML = lastPrice;
+                    console.log(lastPrice);
+                }
+                else {
+                    console.log('Request failed.  Returned status of ' + xhr.status);
+                }
+            };
+            xhr.send();
+        }
+
+        function calculateBtc() {
+            var porcen = document.getElementById("porcen").value;
+            var btcAmount = document.getElementById("btc").value;
+            var arsValuedocument = document.getElementById("arsresult").value;
+            var floatMarketPrice = parseFloat(lastPrice);
+            var btcPercent = porcen * floatMarketPrice / 100;
+            var totalBtc = btcPercent + floatMarketPrice;
+            var newBtcValue = arsValuedocument / bluePrice / totalBtc;
+            document.getElementById("btc").value = newBtcValue.toFixed(8);
+        };
+
+        function mostrarValor() {
+            document.getElementById("arsresult").style.display = "block";
+        };
+
+        function btcusd(){
+            var porcen = document.getElementById("porcen").value;
+            var btcAmount = document.getElementById("btc").value;
+            var floatMarketPrice = parseFloat(lastPrice);
+            var btcPercent = porcen * floatMarketPrice / 100;
+            var totalBtc = btcPercent + floatMarketPrice;
+            var arsresult = totalBtc * btcAmount;
+            var totalArs = bluePrice * arsresult;
+            var parsedtotalArs = parseInt(totalArs);
+            document.getElementById("arsresult").value = parsedtotalArs.toFixed(0);
+        };
+
+        function addEvents() {
+            document.getElementById("calcular").addEventListener('click', mostrarValor);
+            document.getElementById("btc").addEventListener('keyup', btcusd);
+            document.getElementById("porcen").addEventListener('keyup', btcusd);
+            document.getElementById("arsresult").addEventListener('keyup', calculateBtc);
+        };
+
+        function dataCounter() {
+            setTimeout(function () {
+                refreshData();
+                dataCounter();
+            }, 100000);
+        };
+
+        dataCounter();
+        addEvents();
+        refreshData();
+    </script>
+</html>
