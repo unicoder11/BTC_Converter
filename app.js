@@ -5,30 +5,11 @@ var request = require("request");
 var bodyparser = require("body-parser");
 var bitcore = require("bitcore-lib");
 
+var db = require('./connection/db'),
+schema = require('./connection/schema');
 
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/regsitros";
-
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  console.log("Database created!");
-  db.close();
-});
-var routes = require('./routes/index');
 var app = express();
-
-app.use('/', routes);
 app.set("view engine", "ejs");
-
-app.use(bodyparser.urlencoded({
-	extended: true
-}));
-app.use(bodyparser.json());
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
 
 module.exports = app;
 
@@ -55,10 +36,9 @@ function getPrice(returnPrice){
 			}, function(err, res, body){
 			returnPrice(body.last);
 			btcTimestamp = body.timestamp;
-			//console.log(body.timestamp);
 });
 };
-/*
+
 app.get("/", function(req, res){
 	getPrice(function(lastPrice){
 	res.render("index", {
@@ -100,20 +80,12 @@ app.post('/wallet', function(req, res){
 	});
 });
 
-
-
-
-
-
 request({
 		url:" http://api.bluelytics.com.ar/v2/latest",
 		json: true
 }, function(err, res, body){
 	bluePrice = body.blue.value_avg;
-	console.log(bluePrice);
-
 });
-*/
 
 function getBlue(returnBlue){
 	request({
@@ -121,7 +93,6 @@ function getBlue(returnBlue){
 		json: true
 			}, function(err, res, body){
 			bluePrice = body.blue.value_avg;
-			console.log(bluePrice);
 	});
 };
 
