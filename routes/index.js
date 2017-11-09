@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/registros');
 
 var RegistroSchema = new mongoose.Schema({
-//  nombre: String,
   hora: Date,
   btc: Number,
   pesos: Number,
