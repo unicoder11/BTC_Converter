@@ -9,6 +9,7 @@ methodOverride = require('method-override');
 
 var db = require('./connection/db');
 var RegistroSchema = new mongoose.Schema({
+	type: String,
 	dateregistry: Date,
 	btc: Number,
 	pesos: Number,
@@ -101,12 +102,14 @@ app.get("/Register_Saved", function(req, res){
 });
 
 app.post("/registros", function(req, res, next) {
+		var type = req.body.type;
         var dateregistry = req.body.dateregistry;
         var btc = req.body.btc;
         var pesos = req.body.pesos;
         var porcentaje = req.body.porcentaje;
         var ganancia = req.body.ganancia;
         RegData.create({
+        	type : type,
             dateregistry : dateregistry,
             btc : btc,
             pesos : pesos,

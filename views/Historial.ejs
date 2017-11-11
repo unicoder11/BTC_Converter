@@ -3,7 +3,10 @@
 <% title %>
 <div class="container">
 	<div class="row">
-		<div class="col-12 col-sm-5">
+		<div class="col-12 col-sm-2">
+			Type
+		</div>
+		<div class="col-12 col-sm-3">
 			Date
 		</div>
 		<div class="col-12 col-sm-3">
@@ -21,7 +24,10 @@
 	</div>
 	<div class="registros row">
 	<% registros.forEach(function(registro) { %>
-		<div class="col-12 col-sm-5">
+		<div class="col-12 col-sm-2">
+			<%= registro.type %>
+		</div>
+		<div class="col-12 col-sm-3">
 			<%= registro.dateregistry %>
 		</div>
 		<div class="col-12 col-sm-3">

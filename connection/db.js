@@ -11,5 +11,5 @@ var conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'));  
  
 conn.once('open', function() {
-  console.log('se conecto a la base');                    
+  console.log('connected to db');                    
 });
