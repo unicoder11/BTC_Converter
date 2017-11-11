@@ -1,8 +1,42 @@
 <html>
 <% include header %>
-Create a new wallet
-<form method="post" action="/wallet">
-	<input type="text" name="brainsrc">
-	<input type="submit" value="Go">
-</form>
+<% title %>
+<div class="container">
+	<div class="row">
+		<div class="col-12 col-sm-5">
+			Date
+		</div>
+		<div class="col-12 col-sm-3">
+			BTC Amount
+		</div>
+		<div class="col-12 col-sm-2">
+			Pesos
+		</div>
+		<div class="col-12 col-sm-1">
+			%
+		</div>
+		<div class="col-12 col-sm-1">
+			Profit
+		</div>
+	</div>
+	<div class="registros row">
+	<% registros.forEach(function(registro) { %>
+		<div class="col-12 col-sm-5">
+			<%= registro.dateregistry %>
+		</div>
+		<div class="col-12 col-sm-3">
+			<%= registro.btc %>
+		</div>
+		<div class="col-12 col-sm-2">
+			<%= registro.pesos %>
+		</div>
+		<div class="col-12 col-sm-1">
+			<%= registro.porcentaje %>
+		</div>
+		<div class="col-12 col-sm-1">
+			<%= registro.ganancia %>
+		</div>
+    <% }); %>
+	</div>
+</div>
 </html>
