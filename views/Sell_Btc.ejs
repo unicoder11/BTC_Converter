@@ -26,28 +26,31 @@
         </div>
         </div>
 
-        <div class="row">
-            <div class="col-xs-12 col-sm-4">
-                <label>Pesos Ars:</label>
-                <input type="text" id="arsresult" value="0" />
-            </div>
-            <div class="col-xs-12 col-sm-4">
-                <label>Porcentaje:</label>
-                <input type="text" id="porcen" value="0" />
-            </div>
-            <div class="col-xs-12 col-sm-4">
-                <label>Monto Bitcoin:</label>
-                <input type="text" id="btc" value="0" /> 
+        <form action="/registros" method="post" id="formSell" name="addNewRegistry">
+            <input type="hidden" id="type" name="type" value="Sell" />
+            <input type="hidden" id="dateregistry" name="dateregistry" value="" />
+            <input type="hidden" id="ganancia" name="ganancia" value="" />
+            <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                    <label>Pesos Ars:</label>
+                    <input type="text" id="arsresult" value="0" />
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <label>Porcentaje:</label>
+                    <input type="text" id="porcen" value="0" />
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <label>Monto Bitcoin:</label>
+                    <input type="text" id="btc" value="0" /> 
+                </div>
             </div>
 
-            
-        </div>
-
-        <div class="row">
-            <div class="col-xs-12">
-                <button type="button" id="calcular" class="btn" style="margin-top:25px;">Confirmar Transaccion</button> 
+            <div class="row">
+                <div class="col-xs-12">
+                    <button type="button" id="calcular" class="btn" style="margin-top:25px;">Confirmar Transaccion</button> 
+                </div>
             </div>
-        </div>
+        </form>
     </div>
     <script>
         var lastPrice = document.querySelector('.last-price-value').innerHTML;
@@ -106,6 +109,10 @@
             document.getElementById("arsresult").addEventListener('keyup', calculateBtc);
         };
 
+        document.getElementById('calcular').addEventListener("click", function() {
+            document.getElementById('formSell').submit();
+        });
+
         function dataCounter() {
             setTimeout(function () {
                 refreshData();
@@ -113,8 +120,15 @@
             }, 100000);
         };
 
+        function getDayAndHour() {
+            var currentDateAndHour = moment().format(),
+            dateHiddenInput = document.getElementById('dateregistry');
+            dateHiddenInput.value = currentDateAndHour;
+        };
+
         dataCounter();
         addEvents();
+        getDayAndHour9();
         refreshData();
     </script>
 </html>
