@@ -1,15 +1,28 @@
-var express = require("express");
-var app = express();
-var path = require('path');
-var request = require("request");
-var bodyparser = require("body-parser");
-var bitcore = require("bitcore-lib");
+var express = require("express"),
+app = express(),
+path = require('path'),
+request = require("request"),
+bodyParser = require("body-parser"),
+mongoose = require('mongoose'),
+bitcore = require('bitcore-lib'),
+methodOverride = require('method-override');
 
-var db = require('./connection/db'),
-schema = require('./connection/schema');
+var db = require('./connection/db');
+var RegistroSchema = new mongoose.Schema({
+	type: String,
+	dateregistry: Date,
+	btc: Number,
+	pesos: Number,
+	porcentaje: Number,
+	ganancia: Number
+});  
+var RegData = mongoose.model('registros', RegistroSchema);
 
 var app = express();
 app.set("view engine", "ejs");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 module.exports = app;
 
@@ -25,7 +38,7 @@ function brainWallet(uinput, callback){
 };
 
 app.listen(3000, function(){
-	console.log('go');
+	console.log('app listen at port 3000');
 });
 
 
@@ -63,12 +76,60 @@ getPrice(function(lastPrice){
 	});
 });
 
-app.get("/Historial", function(req, res){
-getPrice(function(lastPrice){
-	res.render("Historial", {
-		lastPrice: lastPrice
-		});
+app.get("/Historial", function(req, res, next){
+	RegData.find({}, function (err, registros) {
+              if (err) {
+                  return console.error(err);
+              } else {
+              	console.log(registros);
+                  res.format({
+                    html: function(){
+                        res.render("Historial", {
+                              title: 'Todos los Registros',
+                              "registros" : registros
+                          });
+                    },
+                    json: function(){
+                        res.json(registros);
+                    }
+                });
+              }     
 	});
+});
+
+app.get("/Register_Saved", function(req, res){
+	res.render("Register_Saved", {});
+});
+
+app.post("/registros", function(req, res, next) {
+		var type = req.body.type;
+        var dateregistry = req.body.dateregistry;
+        var btc = req.body.btc;
+        var pesos = req.body.pesos;
+        var porcentaje = req.body.porcentaje;
+        var ganancia = req.body.ganancia;
+        RegData.create({
+        	type : type,
+            dateregistry : dateregistry,
+            btc : btc,
+            pesos : pesos,
+            porcentaje : porcentaje,
+            ganancia : ganancia
+        }, function (err, registro) {
+        	console.log(registro);
+              if (err) {
+                  res.send("There was a problem adding the information to the database.");
+              } else {
+                  res.format({
+                    html: function(){
+                        res.redirect("/Register_Saved");
+                    },
+                    json: function(){
+                        res.json(registro);
+                    }
+                });
+              }
+        })
 });
 
 
