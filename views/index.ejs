@@ -1,6 +1,26 @@
 <html>
 <%include header%>
 
-<form method="post" action="/wallet">
-</form>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6 col-md-4 col-md-offset-4">
+			<form class="form-signin" action="/login", method="POST">
+				<input type="text" name="username" class="form-control" placeholder="Username" required autofocus style="margin-bottom: 20px;">
+				<input type="password" name="password" class="form-control" placeholder="Password" required style="margin-bottom: 20px;">
+					<button class="btn btn-lg btn-secondary" type="submit" style="margin-bottom: 15px;">
+						Sign in
+					</button>
+					<span class="clearfix"></span>
+					<a href="/signup" class="text-center new-account">
+						Create an account
+					</a>
+					<div id="message">
+						<%if (message) { %>
+							<h1 class="text-center error-message"><% message %></h1>
+						<% } %>
+					</div>
+			</form>
+		</div>
+	</div>
+</div>
 </html>

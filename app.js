@@ -1,41 +1,41 @@
-var express = require("express"),
+var express = require('express'),
 app = express(),
 path = require('path'),
-request = require("request"),
-bodyParser = require("body-parser"),
+request = require('request'),
+cookieParser = require('cookie-parser');
+bodyParser = require('body-parser'),
 mongoose = require('mongoose'),
 bitcore = require('bitcore-lib'),
-methodOverride = require('method-override');
+methodOverride = require('method-override'),
+passport = require('passport'),
+expressSession = require('express-session');
+
+app.use(expressSession({
+	secret: 'mySecretKey',
+	resave: true,
+	saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+var flash = require('connect-flash');
+app.use(flash());
+
+var initPassport = require('./passport/init');
+initPassport(passport);
 
 var db = require('./connection/db');
-var RegistroSchema = new mongoose.Schema({
-	type: String,
-	dateregistry: Date,
-	btc: Number,
-	pesos: Number,
-	porcentaje: Number,
-	ganancia: Number
-});  
-var RegData = mongoose.model('registros', RegistroSchema);
 
-var app = express();
+var RegData = require("./models/register.js");
+var UserData = require("./models/user.js");
+
 app.set("view engine", "ejs");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 module.exports = app;
-
-
-function brainWallet(uinput, callback){
-
-	var input = new Buffer(uinput);
-	var hash = bitcore.crypto.Hash.sha256(input);
-	var bn = bitcore.crypto.BN.fromBuffer(hash);
-	var pk = new bitcore.PrivateKey(bn).toWIF();
-	var addy = new bitcore.PrivateKey(bn).toAddress();
-	callback(pk, addy);
-};
 
 app.listen(3000, function(){
 	console.log('app listen at port 3000');
@@ -49,18 +49,20 @@ function getPrice(returnPrice){
 			}, function(err, res, body){
 			returnPrice(body.last);
 			btcTimestamp = body.timestamp;
-});
+	});
 };
 
+var isAuthenticated = function (req, res, next) {
+	if (req.isAuthenticated())
+		return next();
+	res.redirect('/');
+}
+
 app.get("/", function(req, res){
-	getPrice(function(lastPrice){
-	res.render("index", {
-		lastPrice: lastPrice
-		});
-	});
+	res.render("index", { message: req.flash('message') });
 });
 
-app.get("/Buy_Btc", function(req, res){
+app.get("/Buy_Btc", isAuthenticated, function(req, res){
 	getPrice(function(lastPrice){
 	res.render("Buy_Btc", {
 		lastPrice: lastPrice
@@ -68,7 +70,7 @@ app.get("/Buy_Btc", function(req, res){
 	});
 });
 
-app.get("/Sell_Btc", function(req, res){
+app.get("/Sell_Btc", isAuthenticated, function(req, res){
 getPrice(function(lastPrice){
 	res.render("Sell_Btc", {
 		lastPrice: lastPrice
@@ -76,7 +78,7 @@ getPrice(function(lastPrice){
 	});
 });
 
-app.get("/Historial", function(req, res, next){
+app.get("/Historial", isAuthenticated, function(req, res, next){
 	RegData.find({}, function (err, registros) {
               if (err) {
                   return console.error(err);
@@ -132,15 +134,6 @@ app.post("/registros", function(req, res, next) {
         })
 });
 
-
-app.post('/wallet', function(req, res){
-	var brainsrc = req.body.brainsrc;
-	console.log(brainsrc);
-	brainWallet(brainsrc, function(priv, addr){
-		res.send("The wallet of:" + brainsrc + "<br>Addy:" + addr + "<br>Private Key:" + priv);
-	});
-});
-
 request({
 		url:" http://api.bluelytics.com.ar/v2/latest",
 		json: true
@@ -158,3 +151,27 @@ function getBlue(returnBlue){
 };
 
 getBlue();
+
+
+/* Login routes */
+
+app.post('/login', passport.authenticate('login', {
+	successRedirect: '/Buy_Btc',
+	failureRedirect: '/',
+	failureFlash : true  
+}));
+
+app.get('/signup', function(req, res){
+	res.render('User_Register',{message: req.flash('message')});
+});
+
+app.post('/signup', passport.authenticate('signup', {
+	successRedirect: '/Buy_Btc',
+	failureRedirect: '/signup',
+	failureFlash : true  
+}));
+
+app.get('/signout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+});
