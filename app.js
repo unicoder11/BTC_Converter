@@ -34,6 +34,7 @@ app.set("view engine", "ejs");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/public', express.static(path.join(__dirname + '/public'))) ;
 
 module.exports = app;
 
@@ -65,6 +66,8 @@ app.get("/", function(req, res){
 app.get("/Buy_Btc", isAuthenticated, function(req, res){
 	getPrice(function(lastPrice){
 	res.render("Buy_Btc", {
+		title: 'Buy BTC',
+		firstName: req.user.firstName,
 		lastPrice: lastPrice
 		});
 	});
@@ -73,6 +76,8 @@ app.get("/Buy_Btc", isAuthenticated, function(req, res){
 app.get("/Sell_Btc", isAuthenticated, function(req, res){
 getPrice(function(lastPrice){
 	res.render("Sell_Btc", {
+		title: 'Sell BTC',
+		firstName: req.user.firstName,
 		lastPrice: lastPrice
 		});
 	});
@@ -80,16 +85,16 @@ getPrice(function(lastPrice){
 
 app.get("/Historial", isAuthenticated, function(req, res, next){
 	RegData.find({}, function (err, registros) {
-              if (err) {
-                  return console.error(err);
-              } else {
-              	console.log(registros);
+            if (err) {
+                return console.error(err);
+            } else {
                   res.format({
                     html: function(){
                         res.render("Historial", {
-                              title: 'Todos los Registros',
-                              "registros" : registros
-                          });
+                            title: 'All Transactions',
+							firstName: req.user.firstName,
+                            "registros" : registros
+                        });
                     },
                     json: function(){
                         res.json(registros);
@@ -100,7 +105,10 @@ app.get("/Historial", isAuthenticated, function(req, res, next){
 });
 
 app.get("/Register_Saved", function(req, res){
-	res.render("Register_Saved", {});
+	res.render("Register_Saved", {
+		text: 'Transaction saved succesfully',
+		firstName: req.user.firstName
+	});
 });
 
 app.post("/registros", function(req, res, next) {
@@ -118,7 +126,6 @@ app.post("/registros", function(req, res, next) {
             porcentaje : porcentaje,
             ganancia : ganancia
         }, function (err, registro) {
-        	console.log(registro);
               if (err) {
                   res.send("There was a problem adding the information to the database.");
               } else {
@@ -135,8 +142,8 @@ app.post("/registros", function(req, res, next) {
 });
 
 request({
-		url:" http://api.bluelytics.com.ar/v2/latest",
-		json: true
+	url:" http://api.bluelytics.com.ar/v2/latest",
+	json: true
 }, function(err, res, body){
 	bluePrice = body.blue.value_avg;
 });

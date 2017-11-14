@@ -1,0 +1,76 @@
+#buy-btc {
+    label {
+        display:block;
+    }
+
+    input {
+        width:100%;
+        height: 45px;
+    }
+    .cot {
+        margin-bottom: 25px;
+    }
+
+    .confirm-transaction-btn {
+    	margin-top: 25px;
+    }
+}
+
+#sell-btc {
+    label {
+        display:block;
+    }
+
+    input {
+        width:100%;
+        height: 45px;
+    }
+    .cot {
+        margin-bottom: 25px;
+    }
+
+    .confirm-transaction-btn {
+    	margin-top: 25px;
+    }
+}
+
+#history {
+    .list-header {
+        font-weight: bold;
+        border-bottom:1px solid #e2e2e2;
+        padding: 10px 0;
+        margin-bottom: 10px;
+    }
+}
+
+#nav-header {
+	.nav-user {
+		float: right;
+		list-style-type: none;
+	}
+
+	span {
+		padding: 11px 15px;
+		display: block;
+	}
+}
+
+#login-form {
+	input {
+		margin-bottom: 20px;
+	}
+
+	button {
+		margin-bottom: 15px;
+	}
+}
+
+#register-form {
+	input {
+		margin-bottom: 20px;
+	}
+
+	button {
+		margin-bottom: 15px;
+	}
+}

@@ -1,19 +1,7 @@
 <html>
-    <% include header %>
-    <style>
-        label {
-            display:block;
-        }
-
-        input {
-            width:100%;
-        }
-        .cot {
-            margin-bottom:25px;
-        }
-    </style>
-    <div class="container">
-        <h1>Buy Btc</h1>
+   <%- include('header', {logged: true, firstName: firstName}); %>
+    <div id="sell-btc" class="container">
+        <h1><%= title %></h1>
         <div class="row cot">
         <div class="col-xs-12 col-sm-4">
             <h4>Cotizacion Btc:</h4>
@@ -47,7 +35,7 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <button type="button" id="calcular" class="btn" style="margin-top:25px;">Confirmar Transaccion</button> 
+                    <button type="button" id="calcular" class="btn btn-primary confirm-transaction-btn">Confirmar Transaccion</button> 
                 </div>
             </div>
         </form>
