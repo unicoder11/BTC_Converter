@@ -1,8 +1,8 @@
 <html>
-<% include header %>
+<%- include('header', {logged: true, firstName: false}); %>
 <div class="container">
 	<p class="text-success">
-		Transaction saved succesfully
+		<%= text %>
 	</p>
 </div>
 </html>

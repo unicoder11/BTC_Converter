@@ -1,22 +1,25 @@
 <head>
-<title>Btc Converter</title>
-	<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/simplex/bootstrap.min.css" rel="stylesheet" integrity="sha384-C0X5qw1DlkeV0RDunhmi4cUBUkPDTvUqzElcNWm1NI2T4k8tKMZ+wRPQOhZfSJ9N" crossorigin="anonymous">
+  <title>BTC Converter</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/simplex/bootstrap.min.css" rel="stylesheet" integrity="sha384-C0X5qw1DlkeV0RDunhmi4cUBUkPDTvUqzElcNWm1NI2T4k8tKMZ+wRPQOhZfSJ9N" crossorigin="anonymous">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/simplex/bootstrap.min.css" rel="stylesheet" integrity="sha384-C0X5qw1DlkeV0RDunhmi4cUBUkPDTvUqzElcNWm1NI2T4k8tKMZ+wRPQOhZfSJ9N" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="public/styles/css/main.css">
 </head>
-<nav role="navigation" class="navbar navbar-default">
- <div class="container-fluid">
-   <div class="navbar-header">
-     <a class="navbar-brand" href="#">Bitcoin USD</a>
-   </div>
-   <ul class="nav navbar-nav">
-     <li><a href="/">Home</a></li>
-     <li><a class="nav-link" href="/Buy_Btc">Buy BTC</a></li>
-     <li><a class="nav-link" href="/Sell_Btc">Sell BTC</a></li>
-     <li><a class="nav-link" href="/Historial">Historial</a></li>
-   </ul>
- </div>
+<nav id="nav-header" role="navigation" class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Bitcoin USD</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a class="nav-link" href="/Buy_Btc">Buy BTC</a></li>
+      <li><a class="nav-link" href="/Sell_Btc">Sell BTC</a></li>
+      <li><a class="nav-link" href="/Historial">Historial</a></li>
+    </ul>
+    <ul class="nav navbar-nav nav-user">
+      <%if (logged) { %>
+        <%if (firstName) { %><li><span> Welcome, <%= firstName %> </span></li><% } %>
+        <li><a href="/signout">Log out</a></li>
+      <% } %>
+    </ul>
+  </div>
 </nav>
-<head>
-<title>BTC Converter</title>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js"></script>
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/simplex/bootstrap.min.css" rel="stylesheet" integrity="sha384-C0X5qw1DlkeV0RDunhmi4cUBUkPDTvUqzElcNWm1NI2T4k8tKMZ+wRPQOhZfSJ9N" crossorigin="anonymous">
-</head>

@@ -1,8 +1,14 @@
 <html>
-<% include header %>
-<% title %>
+<%- include('header', {logged: true, firstName: firstName}); %>
 <div class="container">
 	<div class="row">
+		<div class="col-sm-12">
+			<h4><%= title %></h4>
+		</div>
+	</div>
+</div>
+<div id="history" class="container">
+	<div class="row list-header">
 		<div class="col-12 col-sm-2">
 			Type
 		</div>
