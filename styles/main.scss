@@ -1,3 +1,13 @@
+$validation-color: #a91b0c;
+
+.validation-message {
+  border: 1px solid $validation-color;
+  padding: 5px 15px;
+  color: $validation-color;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
 #buy-btc {
     label {
         display:block;
@@ -13,6 +23,11 @@
 
     .confirm-transaction-btn {
     	margin-top: 25px;
+    }
+
+    .validation-btc-amount {
+    	@extend .validation-message;
+    	display: none;
     }
 }
 
@@ -31,6 +46,11 @@
 
     .confirm-transaction-btn {
     	margin-top: 25px;
+    }
+
+    .validation-pesos-amount {
+    	@extend .validation-message;
+    	display: none;
     }
 }
 

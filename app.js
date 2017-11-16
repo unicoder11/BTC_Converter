@@ -42,7 +42,6 @@ app.listen(3000, function(){
 	console.log('app listen at port 3000');
 });
 
-
 function getPrice(returnPrice){
 	request({
 		url:" https://www.bitstamp.net/api/ticker/",
@@ -67,6 +66,7 @@ app.get("/Buy_Btc", isAuthenticated, function(req, res){
 	getPrice(function(lastPrice){
 	res.render("Buy_Btc", {
 		title: 'Buy BTC',
+		validationText: 'Amount of BTC can’t be 0',
 		firstName: req.user.firstName,
 		lastPrice: lastPrice
 		});
@@ -77,6 +77,7 @@ app.get("/Sell_Btc", isAuthenticated, function(req, res){
 getPrice(function(lastPrice){
 	res.render("Sell_Btc", {
 		title: 'Sell BTC',
+		validationText: 'Amount of Pesos can’t be 0',
 		firstName: req.user.firstName,
 		lastPrice: lastPrice
 		});
