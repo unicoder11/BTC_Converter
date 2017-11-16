@@ -14,6 +14,9 @@
         </div>
         </div>
 
+        <div class="validations">
+            <span class="validation-btc-amount"><%= validationText %></span>
+        </div>
         <form action="/registros" method="post" id="formBuy" name="addNewRegistry">
             <input type="hidden" id="type" name="type" value="Buy" />
             <input type="hidden" id="dateregistry" name="dateregistry" value="" />
@@ -45,7 +48,6 @@
     <script>
         var lastPrice = document.querySelector('.last-price-value').innerHTML;
         var bluePrice = document.querySelector('.last-blueprice-value').innerHTML;
-
 
         function refreshData() {
             var xhr = new XMLHttpRequest();
@@ -99,8 +101,24 @@
             document.getElementById("arsresult").addEventListener('keyup', calculateBtc);
         };
 
-        document.getElementById('calcular').addEventListener("click", function() {
-            document.getElementById('formBuy').submit();
+        document.getElementById('calcular').addEventListener("click", function(event) {
+            var btcValue = document.getElementById('btc').value;
+
+            if (btcValue == 0) {
+                document.querySelector('.validation-btc-amount').style.display = 'inline-block';
+            } else {
+                document.getElementById('formBuy').submit();
+            }
+        });
+
+        document.getElementById('btc').addEventListener('change', function (event) {
+            var btcValue = document.getElementById('btc').value
+
+            if (btcValue == 0) {
+                document.querySelector('.validation-btc-amount').style.display = 'inline-block';
+            } else {
+                document.querySelector('.validation-btc-amount').style.display = 'none';
+            }
         });
 
         function dataCounter() {

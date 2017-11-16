@@ -14,6 +14,9 @@
         </div>
         </div>
 
+        <div class="validations">
+            <span class="validation-pesos-amount"><%= validationText %></span>
+        </div>
         <form action="/registros" method="post" id="formSell" name="addNewRegistry">
             <input type="hidden" id="type" name="type" value="Sell" />
             <input type="hidden" id="dateregistry" name="dateregistry" value="" />
@@ -97,8 +100,24 @@
             document.getElementById("arsresult").addEventListener('keyup', calculateBtc);
         };
 
-        document.getElementById('calcular').addEventListener("click", function() {
-            document.getElementById('formSell').submit();
+        document.getElementById('calcular').addEventListener("click", function(event) {
+            var pesosValue = document.getElementById('arsresult').value;
+
+            if (pesosValue == 0) {
+                document.querySelector('.validation-pesos-amount').style.display = 'inline-block';
+            } else {
+                document.getElementById('formSell').submit();
+            }
+        });
+
+        document.getElementById('arsresult').addEventListener('change', function (event) {
+            var pesosValue = document.getElementById('arsresult').value
+
+            if (pesosValue == 0) {
+                document.querySelector('.validation-pesos-amount').style.display = 'inline-block';
+            } else {
+                document.querySelector('.validation-pesos-amount').style.display = 'none';
+            }
         });
 
         function dataCounter() {

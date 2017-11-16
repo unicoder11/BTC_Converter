@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
+var ejs = require("gulp-ejs")
 
 var sassSource = 'styles/*.scss',
     cssDist = 'public/styles/css/';
